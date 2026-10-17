@@ -1,0 +1,22 @@
+[Unit]
+Description=Student Union Recruitment Collaboration
+After=network.target
+
+[Service]
+Type=simple
+User=recruitment
+Group=recruitment
+WorkingDirectory=/opt/recruitment
+ExecStart=/usr/bin/python3 -B /opt/recruitment/server/app.py --db /var/lib/recruitment/recruitment.sqlite3 serve --port 8787
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/recruitment
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+[Install]
+WantedBy=multi-user.target

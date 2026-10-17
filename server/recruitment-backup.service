@@ -1,0 +1,13 @@
+[Unit]
+Description=Back Up Recruitment Database
+
+[Service]
+Type=oneshot
+User=recruitment
+Group=recruitment
+ExecStart=/usr/bin/python3 -B /opt/recruitment/server/backup.py
+UMask=0077
+NoNewPrivileges=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/recruitment /var/backups/recruitment
