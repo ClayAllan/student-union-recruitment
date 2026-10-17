@@ -9,6 +9,14 @@
 
 当前版本用于负责人内部协作。报名信息通过 Excel、CSV 等文件导入，不提供学生在线报名入口。
 
+## 在线体验
+
+[打开在线演示](https://clayallan.github.io/student-union-recruitment/)
+
+演示版内置60名虚构报名者，可体验部门视角、面试排期、评价和录取匹配。修改仅保存在当前浏览器，不连接正式共享数据库；请勿导入真实个人信息。
+
+首次发布需在仓库 Settings → Pages 中将 Source 设为 GitHub Actions，再运行 Deploy public demo。以后更新前端时会自动重新发布。
+
 ## 从哪里开始
 
 | 你的目的 | 查看内容 |
