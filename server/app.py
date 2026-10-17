@@ -131,12 +131,12 @@ def validate_state(s):
             raise APIError(400, '记录数量或格式不正确。')
     ids = set()
     for c in s['candidates']:
-        if not isinstance(c, dict) or not re.fullmatch(r'[A-Za-z0-9_-]{1,40}', str(c.get('id', ''))):
+        if not isinstance(c, dict) or not isinstance(c.get('id'), str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,40}', c['id']):
             raise APIError(400, '学号仅支持字母、数字、下划线和连字符。')
         prefs = c.get('prefs')
         if not isinstance(prefs, list) or not 1 <= len(prefs) <= 3 or len(set(prefs)) != len(prefs) or any(d not in DEPARTMENTS for d in prefs):
             raise APIError(400, '志愿需为1–3个不同的正式部门。')
-        if c['id'] in ids or not str(c.get('name', '')).strip() or not str(c.get('college', '')).strip():
+        if c['id'] in ids or any(not isinstance(c.get(k), str) or not c[k].strip() for k in ['name', 'college']):
             raise APIError(400, '学号不得重复，姓名与学院不能为空。')
         ids.add(c['id'])
     candidates = {c['id']: c for c in s['candidates']}
@@ -155,6 +155,8 @@ def validate_state(s):
         if key in record_keys or entry['dept'] not in candidates[entry['candidate']]['prefs'] or entry.get('decision') not in ['推荐', '候补观察', '不建议']:
             raise APIError(400, '面试评价重复或格式不正确。')
         record_keys.add(key)
+        if not isinstance(entry.get('dims'), list) or len(entry['dims']) != 3 or any(v not in ['突出', '稳定', '待观察'] for v in entry['dims']):
+            raise APIError(400, '面试评价需包含三项有效维度。')
     for key in ['rankings', 'departmentAvailability', 'interviewConfig', 'quotas']:
         if not isinstance(s[key], dict) or set(s[key]) != set(DEPARTMENTS):
             raise APIError(400, '部门配置不完整。')
@@ -331,10 +333,12 @@ def make_handler(db_path):
                         db.execute('INSERT INTO sessions VALUES(?,?,?,?)', (hashlib.sha256(token.encode()).hexdigest(), username, csrf, now + 8 * 3600))
                         db.execute('INSERT INTO audit(at,username,action,detail) VALUES(?,?,?,?)', (now, username, 'login', ''))
                         cookie = 'recruit_session=' + token + '; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800' + ('; Secure' if self.secure() else '')
+                        db.commit()
                         return self.json_response(200, {'user': {'username': username, 'role': user['role']}, 'csrf': csrf}, {'Set-Cookie': cookie})
                     user = self.session(db, mutation=True)
                     if route == '/api/logout':
                         db.execute('DELETE FROM sessions WHERE token_hash=?', (user['token_hash'],))
+                        db.commit()
                         return self.json_response(200, {'ok': True}, {'Set-Cookie': 'recruit_session=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0'})
                     if route != '/api/state': raise APIError(404, '接口不存在。')
                     db.execute('BEGIN IMMEDIATE')
@@ -345,9 +349,16 @@ def make_handler(db_path):
                     validate_state(proposed)
                     merged = proposed if user['role'] == ADMIN else merge_department(original, proposed, user['role'])
                     validate_state(merged)
+                    # Candidate progress is derived centrally, rather than trusted from a department's browser.
+                    for candidate in merged['candidates']:
+                        prefs = set(candidate['prefs'])
+                        scheduled = {s['dept'] for s in merged['schedules'] if s['candidate'] == candidate['id'] and s['dept'] in prefs}
+                        recorded = {r['dept'] for r in merged['records'] if r['candidate'] == candidate['id'] and r['dept'] in prefs}
+                        candidate['status'] = '已完成' if prefs <= recorded else '已安排' if prefs <= scheduled else '待处理' if scheduled else '待安排'
                     db.execute('UPDATE state SET version=?,payload=? WHERE id=1', (version + 1, json.dumps(merged, ensure_ascii=False, allow_nan=False)))
                     counts = json.dumps({k: len(merged[k]) for k in ['candidates', 'schedules', 'records', 'matches']}, ensure_ascii=False)
                     db.execute('INSERT INTO audit(at,username,action,version,detail) VALUES(?,?,?,?,?)', (int(time.time()), user['username'], 'save', version + 1, counts))
+                    db.commit()
                     return self.json_response(200, {'version': version + 1})
             except APIError as e: self.json_response(e.status, {'error': e.message})
             except (KeyError, TypeError, ValueError): self.json_response(400, {'error': '数据格式不正确。'})
