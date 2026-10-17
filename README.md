@@ -77,6 +77,13 @@
 .
 ├── README.md
 ├── .gitignore
+├── docs/
+│   ├── 使用指南.md
+│   ├── 常见问题.md
+│   └── images/
+│       ├── dashboard.png
+│       ├── scheduling.png
+│       └── results.png
 ├── dist/
 │   ├── index.html
 │   ├── collaboration.js
