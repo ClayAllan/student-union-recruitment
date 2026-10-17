@@ -1,3 +1,8 @@
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)
+![Database](https://img.shields.io/badge/Database-SQLite-003B57?logo=sqlite&logoColor=white)
+![Departments](https://img.shields.io/badge/Departments-6-green)
+![Mode](https://img.shields.io/badge/Mode-Internal_collaboration-orange)
+
 # 学生会招新协同平台
 
 面向学生会总负责人和各部门负责人的招新管理系统，覆盖报名导入、面试排期、面试评价、部门排序、三志愿录取匹配和结果导出。
