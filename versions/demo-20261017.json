@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "version": "demo-20261017",
+  "label": "20261017 展示基线",
+  "application_source_commit": "c3666c32b93c2338c73848b223f6a491d5bb5db7",
+  "application_files": [
+    {
+      "path": "dist/collaboration.js",
+      "git_blob_sha": "0f69c5463306d18a4aa5d4a117d5423c2453e968",
+      "bytes": 8526
+    },
+    {
+      "path": "dist/index.html",
+      "git_blob_sha": "554626176b9d91f3c5461a3f8736defa4966304f",
+      "bytes": 233584
+    },
+    {
+      "path": "dist/student-union-recruitment-template.xlsx",
+      "git_blob_sha": "39e8e539c4a433903cdcedf02952365b7cb634e7",
+      "bytes": 10447
+    },
+    {
+      "path": "dist/xlsx.full.min.js",
+      "git_blob_sha": "21471af69ef0e4cda1613c2702c54101b92f48d2",
+      "bytes": 951904
+    },
+    {
+      "path": "server/app.py",
+      "git_blob_sha": "53f34e2a3da9ad306947454d76c0213622fcfa25",
+      "bytes": 25125
+    },
+    {
+      "path": "server/backup.py",
+      "git_blob_sha": "d9134471f62036118f6c9ab99c5c33983f530ab0",
+      "bytes": 826
+    },
+    {
+      "path": "server/install.sh",
+      "git_blob_sha": "444d667ceceefd3bfad943c583658e294ea38720",
+      "bytes": 1472
+    },
+    {
+      "path": "server/nginx.conf.template",
+      "git_blob_sha": "a4f703f266e810cb6eb29911481afa760670e2fe",
+      "bytes": 515
+    },
+    {
+      "path": "server/recruitment-backup.service",
+      "git_blob_sha": "a9a77b00f76f0d2f57e18a4b221e5021c7f42c4e",
+      "bytes": 302
+    },
+    {
+      "path": "server/recruitment-backup.timer",
+      "git_blob_sha": "3c563b1adb56dc810315fc961c6e6c442eb8fb2c",
+      "bytes": 175
+    },
+    {
+      "path": "server/recruitment.service",
+      "git_blob_sha": "8117df64f6c3683d0359d0c10d6c4471468109d4",
+      "bytes": 538
+    },
+    {
+      "path": "server/test_service.py",
+      "git_blob_sha": "07b4314f533b66a102c39ff3489fec6928b98993",
+      "bytes": 7931
+    }
+  ],
+  "runtime_data_included": false,
+  "permission_upgrade_status": "待确认，尚未实施"
+}

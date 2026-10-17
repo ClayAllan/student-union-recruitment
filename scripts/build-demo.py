@@ -12,7 +12,7 @@ def build(output):
     html = (source / 'index.html').read_text(encoding='utf-8')
     if 'window.RECRUIT_COLLAB=true' in html or 'window.RECRUIT_COLLAB = true' in html:
         raise ValueError('The public demo must use the static frontend.')
-    notice = '<b>公开演示</b>　内置60名虚构报名者，可自由体验；修改只保存在当前浏览器。请勿导入真实个人信息。'
+    notice = '<b>公开演示 · 20261017 展示基线</b>　内置60名虚构报名者，可自由体验；修改只保存在当前浏览器。请勿导入真实个人信息。'
     html, replaced = re.subn(r'(<div class="notice"><div>).*?(</div><button)', lambda m: m[1] + notice + m[2], html, count=1, flags=re.S)
     if replaced != 1:
         raise ValueError('Demo notice was not found; check the frontend structure.')
