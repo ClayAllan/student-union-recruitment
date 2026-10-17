@@ -1,0 +1,29 @@
+# 数据库与运行数据
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+
+# 环境配置与密钥
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# 缓存与日志
+node_modules/
+__pycache__/
+*.pyc
+*.log
+Thumbs.db
+.DS_Store
+
+# 历史部署及临时目录
+backups/
+.publish-v8-source/
+.v8-recheck/
+.sites-package*/
+site-deployment*.tar.gz
