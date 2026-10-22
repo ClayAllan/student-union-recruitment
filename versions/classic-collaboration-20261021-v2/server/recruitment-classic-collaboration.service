@@ -1,0 +1,22 @@
+[Unit]
+Description=Recruitment Classic Collaboration With Personal Accounts
+After=network.target
+
+[Service]
+Type=simple
+User=recruitment
+Group=recruitment
+WorkingDirectory=/opt/recruitment/releases/classic-collaboration-20261021-v2
+ExecStart=/usr/bin/python3 -B /opt/recruitment/releases/classic-collaboration-20261021-v2/server/app.py --db /var/lib/recruitment/classic-collaboration/recruitment.sqlite3 serve --port 8790
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/recruitment/classic-collaboration
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+[Install]
+WantedBy=multi-user.target

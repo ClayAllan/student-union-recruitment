@@ -1,0 +1,12 @@
+# Review-only fragment for the EXISTING HTTPS server block.
+# Do not add duplicate 80/443 sites or replace existing certificate settings.
+# Preserve the current ACME challenge location and existing TLS configuration.
+location / {
+    proxy_pass http://127.0.0.1:8790;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_http_version 1.1;
+    client_max_body_size 4m;
+    proxy_read_timeout 30s;
+}

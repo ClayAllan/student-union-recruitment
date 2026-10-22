@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily Classic Collaboration Backup
+
+[Timer]
+OnCalendar=*-*-* 03:35:00 Asia/Shanghai
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

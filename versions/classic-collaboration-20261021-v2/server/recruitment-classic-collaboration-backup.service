@@ -1,0 +1,13 @@
+[Unit]
+Description=Private Daily Backup Of Classic Collaboration
+
+[Service]
+Type=oneshot
+User=recruitment
+Group=recruitment
+ExecStart=/usr/bin/python3 -B /opt/recruitment/releases/classic-collaboration-20261021-v2/server/backup.py
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/recruitment/classic-collaboration /var/backups/recruitment/classic-collaboration

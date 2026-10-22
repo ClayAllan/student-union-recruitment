@@ -1,0 +1,13 @@
+*.py text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.sh text eol=lf
+*.service text eol=lf
+*.timer text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.template text eol=lf
+# Preserve classic CSS/mixed line endings and third-party library bytes.
+dist/index.html -text -whitespace
+dist/xlsx.full.min.js -text -whitespace

@@ -1,0 +1,116 @@
+{
+  "version": "20261021-classic-collaboration-v2",
+  "date": "2026-10-21",
+  "application": "classic-collaboration",
+  "schema": 2,
+  "base_version": "20261021-classic-login-v1",
+  "authentication": "password",
+  "password_minimum": 8,
+  "password_maximum": 128,
+  "max_sessions_per_account": 1,
+  "roles": [
+    "总负责人",
+    "主要负责人",
+    "负责人",
+    "工作人员"
+  ],
+  "departments": [
+    "办公室",
+    "公关部",
+    "活动部",
+    "权益部",
+    "实践部",
+    "宣媒部"
+  ],
+  "runtime_data_included": false,
+  "files": {
+    ".gitattributes": {
+      "sha256": "d1c1872cc1b7cbe7039bcda87279b45a95ac678e4db897cf8210cb46b2262598",
+      "bytes": 336
+    },
+    "20261021_验收说明.md": {
+      "sha256": "1336daeee1381170a3609360f015f42fbe68c29da0a0a0b9b55562aeb109e91d",
+      "bytes": 6472
+    },
+    "dist/index.html": {
+      "sha256": "392b489d1e5707841958737ce423c8c63d01be24429d232c2fa418ceb08de88f",
+      "bytes": 240548
+    },
+    "dist/login.js": {
+      "sha256": "c31e121173d3b26ad163e8b6dfce64c59e8746eca5414746504c0eef7ca4069b",
+      "bytes": 11803
+    },
+    "dist/student-union-recruitment-template.xlsx": {
+      "sha256": "37cc09d93192c0ff9b6a4daf6ce14b29b720573b6c77ba662e7b4ead0e58d54a",
+      "bytes": 10447
+    },
+    "dist/team.css": {
+      "sha256": "42afeadcd371cfa0c2ecbc35c876602360de3bb0d1ac2d19c60ff1d9b2fc7370",
+      "bytes": 3748
+    },
+    "dist/team.js": {
+      "sha256": "0aec52990c3399d81ecec699e67c1ddf0ee66d37a2d973c0dc5f93c6e7130e0e",
+      "bytes": 29794
+    },
+    "dist/xlsx.full.min.js": {
+      "sha256": "cc015130aa8521e7f088f88898eba949ccdcbfb38df0bd129b44b7273c3a6f41",
+      "bytes": 951904
+    },
+    "README.md": {
+      "sha256": "60aad4e052391880a574fc3d5e14bdb1b12932368c5d2666aced3c25dca3dab0",
+      "bytes": 7987
+    },
+    "server/app.py": {
+      "sha256": "a745c2a46ce48401c9f91da7a9814c61818732bd0414dce88a80bf34e1b1fa3f",
+      "bytes": 16626
+    },
+    "server/backup.py": {
+      "sha256": "b3bd00d375c11897860bc28436103b4f6e41701f278ac06f0d7d0a732e777422",
+      "bytes": 1033
+    },
+    "server/classic.py": {
+      "sha256": "f3cdd4f0225157be0ada74d66368fee325df227682de4cb72305580f9802e526",
+      "bytes": 5745
+    },
+    "server/errors.py": {
+      "sha256": "95af2104a5ee08d933e73b16048a50092f120dcb842ae3e2e9877b133ebe4668",
+      "bytes": 290
+    },
+    "server/install.sh": {
+      "sha256": "b34db73353f8fdc35156bdc267dc00b0db12864062902c46e861f506d29b5045",
+      "bytes": 1974
+    },
+    "server/migrate_classic.py": {
+      "sha256": "9503cf473c852cba191fba4823bc2ec5ff6e0cc543b8f1d8b215c9515e3a57c3",
+      "bytes": 5586
+    },
+    "server/nginx.conf.template": {
+      "sha256": "931b8ee0152eac5b23a4a6cd703c66b99150a1f86e29c5a3610340f4a45b0ab3",
+      "bytes": 481
+    },
+    "server/recruitment-classic-collaboration-backup.service": {
+      "sha256": "6bdca9993a5289e506ec8e92830d83179fe9ad4e1c1e51801db65b90d6376e45",
+      "bytes": 406
+    },
+    "server/recruitment-classic-collaboration-backup.timer": {
+      "sha256": "efa56b44777bc1abf7c323e65ba1d0c16f59da2785a8a0b82b52de1a6b8776c6",
+      "bytes": 176
+    },
+    "server/recruitment-classic-collaboration.service": {
+      "sha256": "ae8a435bcc82d4488ee6c163df78a7e06c9f4dff8afaa453ef3b989af272b72f",
+      "bytes": 685
+    },
+    "server/service.py": {
+      "sha256": "c9cad4b6a4a521fa37f8b6c62d54d725aa2abae8b08deae59c62d128b65a47b8",
+      "bytes": 45829
+    },
+    "server/test_classic_login.py": {
+      "sha256": "45cd9634a61f1c01611bf0e69fd0797b77703730f6c320a1dadb41a49b7efeab",
+      "bytes": 4464
+    },
+    "server/test_service.py": {
+      "sha256": "4baccf12c9536290ee62da1c74e17322cdb1103cc14372a423be0c8005902d27",
+      "bytes": 21812
+    }
+  }
+}
