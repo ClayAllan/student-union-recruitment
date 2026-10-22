@@ -1,0 +1,35 @@
+sudo systemctl show recruitment.service -p ActiveState -p FragmentPath -p DropInPaths
+sudo nginx -t
+sudo ls -l /etc/nginx/sites-enabled/
+sudo python3 -B - <<'PY'
+import json, sqlite3
+from pathlib import Path
+paths = set(Path('/var/lib/recruitment').glob('recruitment*.sqlite3'))
+paths.add(Path('/var/lib/recruitment/classic-collaboration/recruitment.sqlite3'))
+for path in sorted(paths):
+    result = {'path': str(path), 'exists': path.is_file()}
+    if path.is_file():
+        db = None
+        try:
+            db = sqlite3.connect(path.resolve().as_uri() + '?mode=ro', uri=True, timeout=5)
+            db.execute('PRAGMA query_only=ON')
+            db.execute('BEGIN')
+            tables = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+            if 'metadata' in tables:
+                result['metadata'] = dict(db.execute("SELECT key,value FROM metadata WHERE key IN ('schema','application')"))
+            if 'users' in tables:
+                result['account_count'] = db.execute('SELECT COUNT(*) FROM users').fetchone()[0]
+            if 'objects' in tables:
+                result['live_object_count'] = db.execute('SELECT COUNT(*) FROM objects WHERE deleted=0').fetchone()[0]
+                result['candidate_count'] = db.execute("SELECT COUNT(*) FROM objects WHERE kind='candidate' AND deleted=0").fetchone()[0]
+            elif 'state' in tables:
+                row = db.execute('SELECT payload FROM state WHERE id=1').fetchone()
+                state = json.loads(row[0]) if row else {}
+                result['business_counts'] = {k: len(state.get(k, [])) for k in ('candidates','schedules','records','matches')}
+        except (sqlite3.Error, ValueError, TypeError):
+            result['inspection'] = 'unrecognized_or_unreadable'
+        finally:
+            if db is not None:
+                db.close()
+    print(json.dumps(result, ensure_ascii=False))
+PY

@@ -1,0 +1,1 @@
+sudo -u recruitment /usr/bin/python3 -B /opt/recruitment/releases/classic-collaboration-20261021-v2/server/app.py --db /var/lib/recruitment/classic-collaboration/recruitment.sqlite3 user manager --role admin --name 总负责人

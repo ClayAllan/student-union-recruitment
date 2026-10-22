@@ -1,0 +1,2 @@
+sudo systemctl is-active recruitment-classic-collaboration.service
+sudo grep -nE '^[[:space:]]*(listen|server_name|location|proxy_pass|client_max_body_size)[[:space:]]|^[[:space:]]*proxy_set_header[[:space:]]+(Host|X-Real-IP|X-Forwarded-Proto)[[:space:]]' /etc/nginx/sites-available/recruitment-ip

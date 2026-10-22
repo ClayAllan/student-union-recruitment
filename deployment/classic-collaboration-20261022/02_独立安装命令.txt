@@ -1,0 +1,11 @@
+bash <<'INSTALL'
+set -euo pipefail
+package=/home/ubuntu/recruitment-classic-collaboration-20261021-v2.tar.gz
+test -f "$package" || { printf '%s\n' 'Please upload the package to /home/ubuntu/ first.'; exit 1; }
+printf '%s  %s\n' 'c1d29b58f125450c68a38ae7f54ed6397b30ccd66d1281c859338089b0556a70' "$package" | sha256sum -c -
+stage_dir=$(mktemp -d)
+tar -xzf "$package" -C "$stage_dir"
+sudo bash "$stage_dir/server/install.sh"
+curl --noproxy 127.0.0.1 -fSs --retry 5 --retry-connrefused --retry-delay 1 --connect-timeout 3 --max-time 5 http://127.0.0.1:8790/api/health
+printf '\n'
+INSTALL
