@@ -1,41 +1,57 @@
-"""Prepare the browser-local demo for GitHub Pages, without runtime data."""
+"""Build the live cloud entry and preserve the original static demo separately."""
 import argparse
-from datetime import datetime, timedelta, timezone
+import importlib.util
 from pathlib import Path
-import re
-import shutil
+
+ENTRY = '''<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="refresh" content="0;url=https://81.70.71.131/">
+<link rel="canonical" href="https://81.70.71.131/">
+<title>学生会招新协同平台 · 新版入口</title>
+<style>
+body{margin:0;padding:32px;background:#f4f7fb;color:#172238;font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif}
+main{max-width:580px;margin:12vh auto;padding:32px;border:1px solid #dfe6f0;border-radius:16px;background:white}
+h1{font-size:24px;margin:0 0 12px}p{margin:12px 0}a{color:#2456c9}.primary{display:inline-block;padding:10px 20px;border-radius:8px;background:#2456c9;color:white;text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+<h1>正在进入新版协作平台</h1>
+<p>新版账号登录、任务协作和共享数据由云服务器提供。</p>
+<p><a class="primary" href="https://81.70.71.131/" rel="noreferrer">进入新版登录页</a></p>
+<p>若未自动跳转，请点击上方按钮。</p>
+<p><a href="./demo/">查看原静态演示（虚构数据，无真实登录）</a></p>
+</main>
+<script>window.location.replace("https://81.70.71.131/");</script>
+</body>
+</html>
+'''
 
 
 def build(output):
     root = Path(__file__).resolve().parent.parent
-    source = root / 'dist'
-    html = (source / 'index.html').read_text(encoding='utf-8')
-    if 'window.RECRUIT_COLLAB=true' in html or 'window.RECRUIT_COLLAB = true' in html:
-        raise ValueError('The public demo must use the static frontend.')
-    notice = '<b>公开演示 · 20261017 展示基线</b>　内置60名虚构报名者，可自由体验；修改只保存在当前浏览器。请勿导入真实个人信息。'
-    html, replaced = re.subn(r'(<div class="notice"><div>).*?(</div><button)', lambda m: m[1] + notice + m[2], html, count=1, flags=re.S)
-    if replaced != 1:
-        raise ValueError('Demo notice was not found; check the frontend structure.')
-    html = html.replace('<title>学生会招新协同平台</title>', '<title>学生会招新协同平台 · 在线演示</title>')
-    html = html.replace('recruit-demo-', 'recruit-public-demo-')
-    html = html.replace('recruit-theme-accent', 'recruit-public-demo-theme-accent')
-    html = html.replace('recruit-color-scheme', 'recruit-public-demo-color-scheme')
-    html = html.replace('lockAfterDeadline: true', 'lockAfterDeadline: false')
-    today = datetime.now(timezone(timedelta(hours=8))).date()
-    dates = {'2026-10-08': today + timedelta(days=2), '2026-10-09': today + timedelta(days=3),
-             '2026-10-10': today + timedelta(days=4), '2026-10-16': today + timedelta(days=7)}
-    html = re.sub('|'.join(map(re.escape, dates)), lambda m: dates[m[0]].isoformat(), html)
     destination = Path(output).resolve()
-    if destination == root or destination == source or root in destination.parents and destination.name != '_site':
+    if destination == root or destination == root / 'dist' or root in destination.parents and destination.name != '_site':
         raise ValueError('Choose a dedicated _site folder or a folder outside the source checkout.')
     destination.mkdir(parents=True, exist_ok=True)
     if any(destination.iterdir()):
         raise ValueError('Use an empty output folder to avoid publishing unrelated files.')
-    (destination / 'index.html').write_text(html, encoding='utf-8')
-    for name in ['xlsx.full.min.js', 'student-union-recruitment-template.xlsx']:
-        shutil.copyfile(source / name, destination / name)
+    spec = importlib.util.spec_from_file_location('recruitment_static_baseline', Path(__file__).with_name('build-demo-baseline.py'))
+    baseline = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(baseline)
+    intermediate = destination / '_site'
+    demo = destination / 'demo'
+    if intermediate.resolve().parent != destination or demo.resolve().parent != destination:
+        raise ValueError('Demo paths must remain inside the verified output directory.')
+    baseline.build(intermediate)
+    intermediate.rename(demo)
+    (destination / 'index.html').write_text(ENTRY, encoding='utf-8')
     (destination / '.nojekyll').touch()
-    print(f'Public demo prepared: {destination}')
+    print(f'Live cloud entry and preserved demo prepared: {destination}')
 
 
 if __name__ == '__main__':

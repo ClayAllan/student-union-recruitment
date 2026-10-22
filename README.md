@@ -28,17 +28,17 @@ c1d29b58f125450c68a38ae7f54ed6397b30ccd66d1281c859338089b0556a70
 
 在新版目录运行后端，使用网站目录外的独立数据库，并先通过服务器终端创建总负责人账号。包内没有默认运行账号、演示数据库、账号密码、会话、证书或私钥。公网使用需配置HTTPS；独立安装器不会自动替换既有服务或Nginx。新版数据库不能直接连接旧版或权限增强版程序，真实数据迁移须先在私有副本核对。
 
-本地28项后端检查、21项登录与任务浏览器检查、9项原业务浏览器回归通过，20组录取结果与原版一致。2026-10-22已完成Ubuntu独立后端安装和生产总负责人创建，HTTPS入口切换及公网业务验收仍在进行中；并发容量及第三方安全审计尚未验收。新增[部署操作与切换助手](deployment/classic-collaboration-20261022/)，主程序发布包保持原字节和SHA256。
+本地28项后端检查、21项登录与任务浏览器检查、9项原业务浏览器回归通过，20组录取结果与原版一致。2026-10-22已确认Ubuntu后端和公网HTTPS入口运行新版：健康身份、4个静态文件与交付版一致，匿名业务请求被拒绝。生产登录与实际业务仍需逐项验收，并发容量及第三方安全审计尚未验收。新增[部署操作与切换助手](deployment/classic-collaboration-20261022/)，主程序发布包保持原字节和SHA256。
 
-## 在线静态演示
+## 在线访问
 
-[打开GitHub Pages演示](https://clayallan.github.io/student-union-recruitment/)
+[从GitHub Pages进入新版](https://clayallan.github.io/student-union-recruitment/) · [直接打开云端登录页](https://81.70.71.131/)
 
-该演示继续使用 **20261017展示基线**，内置60名虚构报名者，数据只保存在当前浏览器。请勿导入真实个人信息。
+Pages首页自动进入云端新版登录页，真实账号、任务与共享数据在同一HTTPS站点处理。Pages本身不运行Python，也不在前端伪造密码认证。服务器首次使用空白库，需使用自行创建的生产账号；本地演示账号不适用于生产。
 
-GitHub Pages只托管静态文件，不能运行Python或SQLite共享服务，因而没有新版的真实账号登录和任务授权。新版须通过后端运行后体验，不能用前端密码判断代替真实认证。
+[原静态演示](https://clayallan.github.io/student-union-recruitment/demo/)单独保留20261017展示基线，内置60名虚构报名者，修改只保存在当前浏览器，请勿导入真实个人信息。
 
-根目录`dist/`、`server/`及旧指南保留为20261017展示基线；它们不代表最新独立协作版。Pages构建继续使用既有脚本，版本分支[`codex/demo-baseline-20261017`](https://github.com/ClayAllan/student-union-recruitment/tree/codex/demo-baseline-20261017)保留。
+根目录`dist/`、`server/`及旧指南仍保留20261017展示基线。Pages构建脚本生成新版入口和`demo/`，原静态生成器保存在`scripts/build-demo-baseline.py`；保留分支[`codex/demo-baseline-20261017`](https://github.com/ClayAllan/student-union-recruitment/tree/codex/demo-baseline-20261017)不变。
 
 ## 主要业务操作
 
